@@ -1,0 +1,6 @@
+{
+  "name": "StreamLITE Digital Engagement Challenge 2026",
+  "description": "Interactive live-stream event evaluation platform for StreamLITE Digital Engagement Challenge 2026, featuring 0-5 rubric scoring, broadcast stats, and real-time leaderboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
