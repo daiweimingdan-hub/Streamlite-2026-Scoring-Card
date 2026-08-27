@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import * as XLSX from 'xlsx';
 import { RubricCriterion, Team, TeamEvaluation } from '../types';
 import { calculateWeightedScore, getPerformanceTier } from '../data/rubricData';
-import { Trophy, Download, Search, Filter, CheckCircle2, Clock, Trash2, ExternalLink } from 'lucide-react';
+import { Trophy, Download, Search, Filter, CheckCircle2, Clock, Trash2, ExternalLink, FileSpreadsheet } from 'lucide-react';
 
 interface LeaderboardViewProps {
   teams: Team[];
@@ -47,53 +48,127 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
     })
     .sort((a, b) => b.result.scoreOutOfFive - a.result.scoreOutOfFive);
 
-  // CSV Export functionality
-  const handleExportCSV = () => {
-    const headers = [
-      'Rank',
-      'Team Name',
-      'Project Title',
-      'Category',
-      'Overall Weighted Score (0-5)',
-      'Percentage (%)',
-      'Performance Tier',
-      ...criteria.map((c) => `${c.title} (${c.weightage}%)`),
-      'Status',
-      'General Feedback',
-    ];
+  // Excel Export functionality
+  const handleExportExcel = () => {
+    const wb = XLSX.utils.book_new();
 
-    const rows = rankedTeams.map((item, index) => {
+    // 1. Leaderboard Sheet
+    const leaderboardRows = rankedTeams.map((item, index) => {
       const { team, evaluation, result, tier } = item;
-      const critScores = criteria.map((c) => {
+      const rowData: Record<string, string | number> = {
+        'Rank': index + 1,
+        'Finalist / Team': team.name,
+        'Project Title': team.projectTitle,
+        'Category': team.category,
+        'Presenter': team.presenterName || 'N/A',
+        'Composite Score (0-5)': Number(result.scoreOutOfFive.toFixed(2)),
+        'Overall %': Number(result.percentage.toFixed(1)),
+        'Performance Tier': tier.label,
+        'Status': result.isComplete ? 'Complete' : 'Pending',
+      };
+
+      // Add each criterion column
+      criteria.forEach((c) => {
         const val = evaluation?.scores[c.id];
-        return val !== undefined && val !== null ? val : 'N/A';
+        rowData[`${c.title} (${c.weightage}%)`] =
+          val !== undefined && val !== null ? val : 'Unrated';
       });
 
-      return [
-        index + 1,
-        `"${team.name.replace(/"/g, '""')}"`,
-        `"${team.projectTitle.replace(/"/g, '""')}"`,
-        `"${team.category}"`,
-        result.scoreOutOfFive.toFixed(2),
-        `${result.percentage.toFixed(1)}%`,
-        `"${tier.label}"`,
-        ...critScores,
-        result.isComplete ? 'Complete' : 'Pending',
-        `"${(evaluation?.generalFeedback || '').replace(/"/g, '""')}"`,
-      ];
+      rowData['General Feedback'] = evaluation?.generalFeedback || '';
+      return rowData;
     });
 
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const wsLeaderboard = XLSX.utils.json_to_sheet(leaderboardRows);
+    wsLeaderboard['!cols'] = [
+      { wch: 6 },  // Rank
+      { wch: 22 }, // Team
+      { wch: 28 }, // Project
+      { wch: 18 }, // Category
+      { wch: 18 }, // Presenter
+      { wch: 22 }, // Composite Score
+      { wch: 12 }, // Overall %
+      { wch: 18 }, // Tier
+      { wch: 12 }, // Status
+      ...criteria.map(() => ({ wch: 24 })),
+      { wch: 45 }, // Feedback
+    ];
+    XLSX.utils.book_append_sheet(wb, wsLeaderboard, 'Final Leaderboard');
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `judging_results_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // 2. Detailed Criterion Breakdown Sheet
+    const breakdownRows: Array<{
+      'Rank': number;
+      'Finalist / Team': string;
+      'Criterion': string;
+      'Weightage (%)': number;
+      'Assigned Score (0-5)': number | string;
+      'Weighted Contribution (%)': number | string;
+      'Criterion Remark': string;
+    }> = [];
+
+    rankedTeams.forEach((item, index) => {
+      const { team, evaluation } = item;
+      criteria.forEach((c) => {
+        const scoreVal = evaluation?.scores[c.id];
+        const hasScore = scoreVal !== undefined && scoreVal !== null;
+        const weightedPct = hasScore
+          ? ((scoreVal / 5) * c.weightage).toFixed(2)
+          : 'N/A';
+        const note = evaluation?.criterionNotes?.[c.id] || '';
+
+        breakdownRows.push({
+          'Rank': index + 1,
+          'Finalist / Team': team.name,
+          'Criterion': c.title,
+          'Weightage (%)': c.weightage,
+          'Assigned Score (0-5)': hasScore ? scoreVal : 'Unrated',
+          'Weighted Contribution (%)': hasScore ? Number(weightedPct) : 'N/A',
+          'Criterion Remark': note,
+        });
+      });
+    });
+
+    const wsBreakdown = XLSX.utils.json_to_sheet(breakdownRows);
+    wsBreakdown['!cols'] = [
+      { wch: 6 },
+      { wch: 22 },
+      { wch: 26 },
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 40 },
+    ];
+    XLSX.utils.book_append_sheet(wb, wsBreakdown, 'Detailed Breakdown');
+
+    // 3. Rubric Matrix Reference Sheet
+    const rubricRows = criteria.map((c) => ({
+      'Criterion': c.title,
+      'Description': c.description,
+      'Weightage (%)': c.weightage,
+      '0 - None': c.ratings[0].summary + ': ' + c.ratings[0].points.join('; '),
+      '1 - Extreme Weakness': c.ratings[1].summary + ': ' + c.ratings[1].points.join('; '),
+      '2 - Low Quality': c.ratings[2].summary + ': ' + c.ratings[2].points.join('; '),
+      '3 - Good Quality': c.ratings[3].summary + ': ' + c.ratings[3].points.join('; '),
+      '4 - High Quality': c.ratings[4].summary + ': ' + c.ratings[4].points.join('; '),
+      '5 - Flawless': c.ratings[5].summary + ': ' + c.ratings[5].points.join('; '),
+    }));
+
+    const wsRubric = XLSX.utils.json_to_sheet(rubricRows);
+    wsRubric['!cols'] = [
+      { wch: 24 },
+      { wch: 35 },
+      { wch: 15 },
+      { wch: 35 },
+      { wch: 35 },
+      { wch: 35 },
+      { wch: 35 },
+      { wch: 35 },
+      { wch: 35 },
+    ];
+    XLSX.utils.book_append_sheet(wb, wsRubric, 'Rubric Reference');
+
+    // Write file
+    const dateStr = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `StreamLITE_2026_Final_Results_${dateStr}.xlsx`);
   };
 
   return (
@@ -114,12 +189,12 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            id="btn-export-csv"
-            onClick={handleExportCSV}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center gap-2"
+            id="btn-export-excel"
+            onClick={handleExportExcel}
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-all flex items-center gap-2"
           >
-            <Download className="w-4 h-4" />
-            <span>Export CSV Tally</span>
+            <FileSpreadsheet className="w-4 h-4" />
+            <span>Export Excel (.xlsx)</span>
           </button>
 
           <button

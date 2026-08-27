@@ -15,7 +15,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const scoreRatings: ScoreRating[] = [5, 4, 3, 2, 1, 0];
+  const scoreRatings: ScoreRating[] = [0, 1, 2, 3, 4, 5];
 
   const handlePrint = () => {
     window.print();
@@ -65,29 +65,29 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
                 <tr className="bg-slate-900 text-white divide-x divide-slate-800">
                   <th className="p-3.5 w-36 font-bold uppercase tracking-wider">Criteria</th>
                   <th className="p-3.5 w-48 font-bold uppercase tracking-wider">Description</th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-blue-900 text-blue-100">
-                    5<br />
-                    <span className="text-[10px] font-normal text-blue-200">Flawless</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-blue-950 text-blue-200">
-                    4<br />
-                    <span className="text-[10px] font-normal text-blue-300">High</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-200">
-                    3<br />
-                    <span className="text-[10px] font-normal text-slate-300">Good</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-300">
-                    2<br />
-                    <span className="text-[10px] font-normal text-slate-400">Low</span>
+                  <th className="p-3.5 w-32 text-center font-bold bg-slate-900 text-slate-400">
+                    0<br />
+                    <span className="text-[10px] font-normal text-slate-400">None</span>
                   </th>
                   <th className="p-3.5 w-36 text-center font-bold bg-slate-850 text-slate-300">
                     1<br />
                     <span className="text-[10px] font-normal text-slate-400">Extreme</span>
                   </th>
-                  <th className="p-3.5 w-32 text-center font-bold bg-slate-900 text-slate-400">
-                    0<br />
-                    <span className="text-[10px] font-normal text-slate-500">None</span>
+                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-300">
+                    2<br />
+                    <span className="text-[10px] font-normal text-slate-400">Low</span>
+                  </th>
+                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-200">
+                    3<br />
+                    <span className="text-[10px] font-normal text-slate-300">Good</span>
+                  </th>
+                  <th className="p-3.5 w-36 text-center font-bold bg-amber-950 text-amber-200">
+                    4<br />
+                    <span className="text-[10px] font-normal text-amber-300">High</span>
+                  </th>
+                  <th className="p-3.5 w-36 text-center font-bold bg-amber-900 text-amber-100">
+                    5<br />
+                    <span className="text-[10px] font-normal text-amber-200">Flawless</span>
                   </th>
                   <th className="p-3.5 w-24 text-center font-bold bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950">
                     Weightage

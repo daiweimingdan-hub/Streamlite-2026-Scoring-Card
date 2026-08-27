@@ -16,7 +16,7 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
 }) => {
   const [hoveredScore, setHoveredScore] = useState<ScoreRating | null>(null);
 
-  const ratingsList: ScoreRating[] = [1, 2, 3, 4, 5, 0];
+  const ratingsList: ScoreRating[] = [0, 1, 2, 3, 4, 5];
 
   const getScoreStyle = (score: ScoreRating, isSelected: boolean) => {
     if (isSelected) {
