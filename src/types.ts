@@ -23,9 +23,9 @@ export interface RubricCriterion {
 export interface Team {
   id: string;
   name: string;
-  projectTitle: string;
-  presenterName: string;
-  category: string;
+  projectTitle?: string;
+  presenterName?: string;
+  category?: string;
   avatarColor: string;
 }
 

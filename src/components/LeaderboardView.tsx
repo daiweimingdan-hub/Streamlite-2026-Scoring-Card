@@ -40,7 +40,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
     .filter(({ team, result }) => {
       const matchesSearch =
         team.name.toLowerCase().includes(search.toLowerCase()) ||
-        team.projectTitle.toLowerCase().includes(search.toLowerCase());
+        (team.projectTitle ? team.projectTitle.toLowerCase().includes(search.toLowerCase()) : false);
 
       if (filter === 'completed') return matchesSearch && result.isComplete;
       if (filter === 'pending') return matchesSearch && !result.isComplete;
@@ -57,15 +57,20 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       const { team, evaluation, result, tier } = item;
       const rowData: Record<string, string | number> = {
         'Rank': index + 1,
-        'Finalist / Team': team.name,
-        'Project Title': team.projectTitle,
-        'Category': team.category,
-        'Presenter': team.presenterName || 'N/A',
-        'Composite Score (0-5)': Number(result.scoreOutOfFive.toFixed(2)),
-        'Overall %': Number(result.percentage.toFixed(1)),
-        'Performance Tier': tier.label,
-        'Status': result.isComplete ? 'Complete' : 'Pending',
+        'Company': team.name,
       };
+
+      if (team.projectTitle) {
+        rowData['Project Title'] = team.projectTitle;
+      }
+      if (team.category) {
+        rowData['Category'] = team.category;
+      }
+
+      rowData['Composite Score (0-5)'] = Number(result.scoreOutOfFive.toFixed(2));
+      rowData['Overall %'] = Number(result.percentage.toFixed(1));
+      rowData['Performance Tier'] = tier.label;
+      rowData['Status'] = result.isComplete ? 'Complete' : 'Pending';
 
       // Add each criterion column
       criteria.forEach((c) => {
@@ -81,10 +86,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
     const wsLeaderboard = XLSX.utils.json_to_sheet(leaderboardRows);
     wsLeaderboard['!cols'] = [
       { wch: 6 },  // Rank
-      { wch: 22 }, // Team
-      { wch: 28 }, // Project
-      { wch: 18 }, // Category
-      { wch: 18 }, // Presenter
+      { wch: 24 }, // Company
       { wch: 22 }, // Composite Score
       { wch: 12 }, // Overall %
       { wch: 18 }, // Tier
@@ -97,7 +99,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
     // 2. Detailed Criterion Breakdown Sheet
     const breakdownRows: Array<{
       'Rank': number;
-      'Finalist / Team': string;
+      'Company': string;
       'Criterion': string;
       'Weightage (%)': number;
       'Assigned Score (0-5)': number | string;
@@ -113,11 +115,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
         const weightedPct = hasScore
           ? ((scoreVal / 5) * c.weightage).toFixed(2)
           : 'N/A';
-        const note = evaluation?.criterionNotes?.[c.id] || '';
+        const note = evaluation?.notes?.[c.id] || '';
 
         breakdownRows.push({
           'Rank': index + 1,
-          'Finalist / Team': team.name,
+          'Company': team.name,
           'Criterion': c.title,
           'Weightage (%)': c.weightage,
           'Assigned Score (0-5)': hasScore ? scoreVal : 'Unrated',
@@ -269,7 +271,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
             <thead>
               <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
                 <th className="p-4 w-16 text-center">Rank</th>
-                <th className="p-4 min-w-[200px]">Team & Project</th>
+                <th className="p-4 min-w-[200px]">Company</th>
                 <th className="p-4 w-28 text-center">Score / 5.0</th>
                 <th className="p-4 w-24 text-center">Overall %</th>
                 <th className="p-4 w-36 text-center">Tier</th>
@@ -317,12 +319,16 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                       <div className="font-extrabold text-slate-900 dark:text-white text-sm">
                         {team.name}
                       </div>
-                      <div className="text-slate-500 dark:text-slate-400 font-medium text-xs">
-                        {team.projectTitle}
-                      </div>
-                      <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider block mt-0.5">
-                        {team.category}
-                      </span>
+                      {team.projectTitle && (
+                        <div className="text-slate-500 dark:text-slate-400 font-medium text-xs">
+                          {team.projectTitle}
+                        </div>
+                      )}
+                      {team.category && (
+                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block mt-0.5">
+                          {team.category}
+                        </span>
+                      )}
                     </td>
 
                     {/* Overall Score */}

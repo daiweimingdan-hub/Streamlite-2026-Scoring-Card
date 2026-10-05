@@ -10,8 +10,8 @@ import { ScoreSummaryCard } from './components/ScoreSummaryCard';
 import { LeaderboardView } from './components/LeaderboardView';
 import { RubricMatrixModal } from './components/RubricMatrixModal';
 
-const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v1';
-const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v1';
+const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v3';
+const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v3';
 const JUDGE_NAME_STORAGE_KEY = 'rubric_judging_judge_name_v1';
 
 export default function App() {
@@ -19,7 +19,22 @@ export default function App() {
   const [teams, setTeams] = useState<Team[]>(() => {
     try {
       const saved = localStorage.getItem(TEAMS_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_TEAMS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // If previous teams had old sample names or old descriptions, reset to INITIAL_TEAMS
+          const hasOldData = parsed.some(
+            (t: Team) =>
+              t.name === 'Team Horizon' ||
+              t.name === 'BioPulse Tech' ||
+              Boolean(t.projectTitle && t.projectTitle.includes('Mindful Wellness'))
+          );
+          if (!hasOldData) {
+            return parsed;
+          }
+        }
+      }
+      return INITIAL_TEAMS;
     } catch (e) {
       return INITIAL_TEAMS;
     }
@@ -178,6 +193,12 @@ export default function App() {
     setSelectedTeamId(newId);
   };
 
+  // Reset to default 6 official competition teams
+  const handleResetToDefaultTeams = () => {
+    setTeams(INITIAL_TEAMS);
+    setSelectedTeamId(INITIAL_TEAMS[0].id);
+  };
+
   // Reset Evaluation for current team
   const handleResetEvaluation = () => {
     if (!currentTeam) return;
@@ -233,6 +254,7 @@ export default function App() {
               evaluations={evaluations}
               onSelectTeam={setSelectedTeamId}
               onAddTeam={handleAddTeam}
+              onResetToDefaultTeams={handleResetToDefaultTeams}
             />
 
             {/* Main Scoring Grid */}

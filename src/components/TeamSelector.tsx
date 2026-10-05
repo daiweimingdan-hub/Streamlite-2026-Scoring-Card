@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Team, TeamEvaluation } from '../types';
 import { calculateWeightedScore } from '../data/rubricData';
-import { Plus, Search, CheckCircle2, Clock, Users, X } from 'lucide-react';
+import { Plus, Search, CheckCircle2, Clock, Users, X, RotateCcw } from 'lucide-react';
 
 interface TeamSelectorProps {
   teams: Team[];
@@ -9,6 +9,7 @@ interface TeamSelectorProps {
   evaluations: Record<string, TeamEvaluation>;
   onSelectTeam: (teamId: string) => void;
   onAddTeam: (newTeam: Omit<Team, 'id'>) => void;
+  onResetToDefaultTeams?: () => void;
 }
 
 export const TeamSelector: React.FC<TeamSelectorProps> = ({
@@ -17,6 +18,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
   evaluations,
   onSelectTeam,
   onAddTeam,
+  onResetToDefaultTeams,
 }) => {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -28,19 +30,19 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
   const filteredTeams = teams.filter(
     (t) =>
       t.name.toLowerCase().includes(search.toLowerCase()) ||
-      t.projectTitle.toLowerCase().includes(search.toLowerCase()) ||
-      t.category.toLowerCase().includes(search.toLowerCase())
+      (t.projectTitle && t.projectTitle.toLowerCase().includes(search.toLowerCase())) ||
+      (t.category && t.category.toLowerCase().includes(search.toLowerCase()))
   );
 
   const handleCreateTeam = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTeamName.trim() || !newProjectTitle.trim()) return;
+    if (!newTeamName.trim()) return;
 
     onAddTeam({
       name: newTeamName.trim(),
-      projectTitle: newProjectTitle.trim(),
-      presenterName: newPresenterName.trim() || 'Team Presenters',
-      category: newCategory.trim() || 'Innovation',
+      projectTitle: newProjectTitle.trim() || undefined,
+      presenterName: newPresenterName.trim() || undefined,
+      category: newCategory.trim() || undefined,
       avatarColor: 'from-blue-600 to-indigo-700',
     });
 
@@ -64,6 +66,18 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
             className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
           />
         </div>
+
+        {onResetToDefaultTeams && (
+          <button
+            onClick={onResetToDefaultTeams}
+            title="Reset to the 6 official competition teams"
+            className="px-3 py-2.5 rounded-xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-amber-400 text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Reset to 6 Teams</span>
+          </button>
+        )}
+
         <button
           id="btn-add-team-trigger"
           onClick={() => setShowAddModal(true)}
@@ -118,7 +132,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
                 <div className={`text-[11px] font-medium truncate ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
                   {result.isComplete
                     ? `Score: ${result.scoreOutOfFive.toFixed(2)} / 5`
-                    : team.projectTitle}
+                    : (team.projectTitle || 'In Evaluation')}
                 </div>
               </div>
             </button>

@@ -52,17 +52,21 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-sm">
-                {team.category}
-              </span>
+              {team.category && (
+                <span className="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-sm">
+                  {team.category}
+                </span>
+              )}
               <span className="text-xs text-cyan-400 font-bold uppercase tracking-wider">Live Stream Evaluation</span>
             </div>
-            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
               <span>{team.name}</span>
             </h2>
-            <p className="text-sm font-medium text-slate-300">
-              Project: <span className="text-amber-300 font-bold">{team.projectTitle}</span>
-            </p>
+            {team.projectTitle && (
+              <p className="text-sm font-medium text-slate-300">
+                Project: <span className="text-amber-300 font-bold">{team.projectTitle}</span>
+              </p>
+            )}
             {team.presenterName && (
               <p className="text-xs text-slate-400">
                 Presenter(s): {team.presenterName}
