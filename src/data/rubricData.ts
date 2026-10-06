@@ -2,17 +2,16 @@ import { RubricCriterion, PerformanceTier } from '../types';
 
 export const RUBRIC_CRITERIA: RubricCriterion[] = [
   {
-    id: 'product_knowledge',
-    title: 'Product Knowledge & Value Proposition',
-    description: "Evaluate team's confidence and product knowledge. Looks at how clearly the team explain core features and frame a persuasive value proposition for the consumer.",
-    weightage: 30,
+    id: 'delivery_showmanship',
+    title: 'Delivery & Showmanship',
+    description: 'Evaluates confidence and product knowledge through factors such as camera presence, charisma and energy level used to showcase items and captivate viewers throughout the livestream',
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
-        summary: 'Flawless & Profound Knowledge',
+        summary: 'Flawless & High Energy',
         points: [
-          'Flawless / High energy / Professional-grade charisma',
-          'Absolute confidence',
+          'Flawless / Professional-grade charisma, Absolute confidence.',
           'Seamlessly blends profound product knowledge that entirely commands the broadcast'
         ]
       },
@@ -20,41 +19,37 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
         score: 4,
         summary: 'High Energy & Natural Charisma',
         points: [
-          'Natural charisma and strong confidence',
-          'Displays strong product familiarity',
-          'Shows smooth on-camera movement and actively captivates the audience'
+          'High energy / Natural charisma / Strong confidence',
+          'Displays strong product familiarity, shows smooth on-camera movement and actively captivates the audience'
         ]
       },
       3: {
         score: 3,
-        summary: 'Good Confidence & Knowledge',
+        summary: 'Good Confidence & Clear Knowledge',
         points: [
-          'Maintains steady energy levels and an acceptable camera presence',
-          'Clear product knowledge',
-          'Keeps viewers baseline-interested'
+          'Good confidence / Clear product knowledge',
+          'Maintains steady energy levels and an acceptable camera presence to keep viewers baseline-interested.'
         ]
       },
       2: {
         score: 2,
-        summary: 'Low Confidence & Rigid Presence',
+        summary: 'Low Confidence & Inconsistent Energy',
         points: [
-          'Inconsistent energy levels',
-          'Displays basic product knowledge but struggles with awkward pauses',
-          'Camera presence is rigid and fails to captivate viewers'
+          'Low confidence / Inconsistent energy levels.',
+          'Displays basic product knowledge but struggles with awkward pauses. Camera presence is rigid. Presentation fails to captivate viewers'
         ]
       },
       1: {
         score: 1,
-        summary: 'Extreme Hesitation & Script Reading',
+        summary: 'Extreme Hesitation & Flat Delivery',
         points: [
-          'Extreme hesitation & lack of confidence',
-          'Presenter reads entirely from a script with zero camera presence',
-          'Unfamiliar with product, leading to flat, unengaging delivery'
+          'Extreme hesitation / Lack of confidence',
+          'Presenter reads entirely from a script with zero camera presence. Presenter is unfamiliar to product, leading to flat, unengaging delivery'
         ]
       },
       0: {
         score: 0,
-        summary: 'Unable to Showcase Product',
+        summary: 'Unable to Showcase',
         points: [
           'Presenter unable to showcase products'
         ]
@@ -62,16 +57,16 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     }
   },
   {
-    id: 'structure_flow',
-    title: 'Structure, Flow and Time Management',
-    description: 'Assess creativity and storytelling, logical transition between products and smooth pacing within the time limit.',
-    weightage: 20,
+    id: 'content_creativity',
+    title: 'Content Creativity & Originality',
+    description: 'Focuses on creativity and storytelling through factors like the uniqueness of ideas, presentation style and use of engaging themes or current trends',
+    weightage: 10,
     ratings: {
       5: {
         score: 5,
-        summary: 'Masterclass Storytelling',
+        summary: 'Masterclass in Creative Storytelling',
         points: [
-          'Masterclass in creative storytelling; concepts are original',
+          'Masterclass in creative storytelling concepts are original.',
           'Seamlessly weaves highly engaging theme that feels premium and distinctly memorable'
         ]
       },
@@ -79,16 +74,16 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
         score: 4,
         summary: 'Distinctly Unique Approach',
         points: [
-          'Integrates current trends and creative storytelling flawlessly',
-          'Streams stand out visually and conceptually'
+          'Distinctly unique approach',
+          'Integrates current trends and creative storytelling flawlessly, stream stand out visually and conceptually'
         ]
       },
       3: {
         score: 3,
         summary: 'Creative & Structured Presentation',
         points: [
-          'Structured presentation',
-          'Successfully incorporates a clear theme or storytelling element that supports product features naturally'
+          'Creative / Structured presentation',
+          'Successfully incorporates a clear theme or storytelling element that supports the product features naturally'
         ]
       },
       2: {
@@ -96,15 +91,15 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
         summary: 'Minimal Creative Styling',
         points: [
           'Minimal attempt at creative styling',
-          'Flow is highly predictable, and themes or current trends are loosely tied to products'
+          'The flow is highly predictable, and themes or current trends is loosely tied to the products'
         ]
       },
       1: {
         score: 1,
         summary: 'Highly Generic & Repetitive',
         points: [
-          'Highly generic and repetitive presentation',
-          'No recognizable storytelling or creative themes'
+          'Highly generic, Repetitive presentation',
+          'no recognizable storytelling or creative themes'
         ]
       },
       0: {
@@ -117,16 +112,71 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     }
   },
   {
-    id: 'communication',
-    title: 'Communication & Presenter Persona',
-    description: 'Evaluate camera presence, charisma and engaging energy throughout the pre-recorded broadcast.',
-    weightage: 30,
+    id: 'audience_engagement',
+    title: 'Audience Engagement & Interaction',
+    description: 'Measures engagement and interaction with the audience through factors like responsiveness to live comments, ability to drive participation and strategies to sustain viewer interest',
+    weightage: 20,
+    ratings: {
+      5: {
+        score: 5,
+        summary: 'Mastery of Live Crowd Control',
+        points: [
+          'Mastery of live crowd control.',
+          'Dynamically drives massive participation, addresses the audience with superb charm, sustains peak viewer interest effortlessly'
+        ]
+      },
+      4: {
+        score: 4,
+        summary: 'Highly Responsive & Conversational',
+        points: [
+          'Highly responsive, conversational.',
+          'Spontaneously turns live comments into interactive highlights, creating an energetic call-and-response environment that grips viewer interest'
+        ]
+      },
+      3: {
+        score: 3,
+        summary: 'Consistent & Strong Interaction',
+        points: [
+          'Consistent engagement / Strong interaction with audience.',
+          'Responds to comments in a timely manner and uses effective strategies to encourage viewer participation'
+        ]
+      },
+      2: {
+        score: 2,
+        summary: 'Slow & Mechanical Response',
+        points: [
+          'Slow / Mechanical response to comments.',
+          'Attempts basic audience prompts but struggles to sustain viewer interest or build a community dynamic'
+        ]
+      },
+      1: {
+        score: 1,
+        summary: 'One-Way Broadcast',
+        points: [
+          'One-way broadcast.',
+          'Acknowledges comments exceptionally late or in a dismissive manner, severely breaking the interactive flow'
+        ]
+      },
+      0: {
+        score: 0,
+        summary: 'Completely Ignores Audience',
+        points: [
+          'Completely ignores audience, chat and/or comments'
+        ]
+      }
+    }
+  },
+  {
+    id: 'communication_skills',
+    title: 'Communication Skills',
+    description: 'Evaluates clarity of speech, articulation, pacing and the ability to express ideas and features effectively',
+    weightage: 10,
     ratings: {
       5: {
         score: 5,
         summary: 'Flawless Eloquence & Articulation',
         points: [
-          'Flawless eloquence and precise articulation',
+          'Flawless eloquence / Precise articulation.',
           'Compellingly delivers complex ideas with professional-level verbal flow and persuasive vocal power'
         ]
       },
@@ -134,37 +184,37 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
         score: 4,
         summary: 'Highly Articulate & Expressive',
         points: [
-          'Highly articulate and expressive',
-          'Uses intonation, vocal variety and polished pacing to emphasize selling points smoothly and persuasively'
+          'Highly articulate and expressive.',
+          'Uses intentional vocal variety and polished pacing to emphasize selling points smoothly and persuasively'
         ]
       },
       3: {
         score: 3,
-        summary: 'Clear Speech & Steady Pacing',
+        summary: 'Clear Speech & Good Articulation',
         points: [
-          'Clear speech and steady pacing with good articulation',
-          'Ideas and product features are expressed effectively and easily understood by average consumer'
+          'Clear speech, steady pacing / Good articulation.',
+          'Ideas and product features are expressed effectively and can be easily understood by the average consumer'
         ]
       },
       2: {
         score: 2,
-        summary: 'Heavy Filler Reliance',
+        summary: 'Heavy Reliance on Fillers',
         points: [
-          'Heavy reliance on fillers (e.g. "um", "ah")',
-          'Pacing is uneven; product feature descriptions occasionally sound confused or unstructured'
+          'Heavy reliance on fillers (eg: "um", "ah").',
+          'Pacing is uneven and description of product feature occasionally sound confused or unstructured'
         ]
       },
       1: {
         score: 1,
-        summary: 'Highly Muffled & Disjointed',
+        summary: 'Highly Muffled / Severe Pacing Issues',
         points: [
-          'Highly muffled articulation, severe pacing issues (mumbling or speaking too fast/slow)',
+          'Highly muffled articulation or severe pacing issues (mumbling, speaking too fast/slow).',
           'Ideas are incredibly disjointed and difficult to follow'
         ]
       },
       0: {
         score: 0,
-        summary: 'Inaudible Speech / Severe Barriers',
+        summary: 'Inaudible / Severe Barriers',
         points: [
           'Inaudible speech, severe language barriers preventing effective communication with audience'
         ]
@@ -173,50 +223,47 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
   },
   {
     id: 'technical_execution',
-    title: 'Technical Execution & Setup',
-    description: 'Measures clarity and professionalism in production standards, focusing on areas like audio, lighting, framing and product visibility.',
-    weightage: 20,
+    title: 'Technical Execution & Visuals',
+    description: 'Focuses on production standards through factors like audio, framing, lighting and a smooth overall visual presentation',
+    weightage: 10,
     ratings: {
       5: {
         score: 5,
-        summary: 'Studio-Grade Broadcast Executive',
+        summary: 'Professional Studio-Grade Broadcast',
         points: [
-          'Professional studio-grade broadcast executive',
-          'Flawless audio dynamics',
-          'Beautiful lighting depths, seamless multi-angle framing or visual overlays'
+          'Professional studio-grade broadcast executive.',
+          'Flawless audio dynamics, beautiful lighting depths, seamless multi-angle framing or visual overlays'
         ]
       },
       4: {
         score: 4,
         summary: 'Sharp & Polished Presentation',
         points: [
-          'Sharp, polished visual presentation',
-          'Uses deliberate camera angles, crisp audio levels',
-          'Optimized lighting that accentuates the product\'s appeal'
+          'Sharp, polished visual presentation.',
+          'Uses desirable camera angles, crisp audio levels, optimized lighting that accentuates the products appeal'
         ]
       },
       3: {
         score: 3,
         summary: 'Good Production Standards',
         points: [
-          'Good production standards',
-          'Audio is consistently crisp, video framing is stable',
-          'Lighting is balanced and products remain clearly visible within frame'
+          'Good production standards.',
+          'Audio is consistently crisp, video framing is stable, lighting is balanced and products remain clearly visible within the frame'
         ]
       },
       2: {
         score: 2,
-        summary: 'Passable Quality with Distractions',
+        summary: 'Passable with Minor Distractions',
         points: [
-          'Passable quality but minor distractions exist',
-          'Occasional echo, shaky camera, unbalanced lighting, or clumsy product staging'
+          'Passable quality but minor distractions exist.',
+          '(eg: occasional echo, shaky camera, unbalance lighting, or clumsily product staging)'
         ]
       },
       1: {
         score: 1,
-        summary: 'Extremely Poor Audio / Lighting',
+        summary: 'Extremely Poor Audio / Blurry',
         points: [
-          'Extremely poor audio or dark, blurry lighting',
+          'Extremely poor audio or dark, blurry lighting.',
           'The product is frequently out of frame'
         ]
       },
@@ -225,6 +272,113 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
         summary: 'Broken Link / Silent Audio',
         points: [
           'Broken link, unwatchable video framing or completely silent audio'
+        ]
+      }
+    }
+  },
+  {
+    id: 'digital_citizenship',
+    title: 'Digital Citizenship & Professionalism',
+    description: 'Evaluates clarity and professionalism in online behaviour through factors like respectful language, positive brand attitude, and strict adherence to competition guidelines',
+    weightage: 10,
+    ratings: {
+      5: {
+        score: 5,
+        summary: 'Exemplary Professionalism',
+        points: [
+          'Demonstrates exemplary professionalism with respectful language,',
+          'positive brand attitude, and full compliance with all competition guidelines'
+        ]
+      },
+      4: {
+        score: 4,
+        summary: 'Strong Professionalism',
+        points: [
+          'Demonstrates strong professionalism with respectful language,',
+          'positive brand attitude, and minor lapses in guideline compliance'
+        ]
+      },
+      3: {
+        score: 3,
+        summary: 'Acceptable Professionalism',
+        points: [
+          'Demonstrates acceptable professionalism with generally respectful language,',
+          'an appropriate brand attitude, and complies with most competition guidelines'
+        ]
+      },
+      2: {
+        score: 2,
+        summary: 'Inconsistent Professionalism',
+        points: [
+          'Demonstrates inconsistent professionalism,',
+          'occasional inappropriate language, weak brand representation, partial compliance with competition guidelines'
+        ]
+      },
+      1: {
+        score: 1,
+        summary: 'Poor Professionalism',
+        points: [
+          'Demonstrates poor professionalism,',
+          'inappropriate language, negative brand representation, frequent breaches of competition guidelines'
+        ]
+      },
+      0: {
+        score: 0,
+        summary: 'Unprofessional Conduct',
+        points: [
+          'Demonstrates unprofessional behaviour with inappropriate conduct,',
+          'poor brand representation, failure to comply with competition guidelines'
+        ]
+      }
+    }
+  },
+  {
+    id: 'sales',
+    title: 'Sales',
+    description: 'Measures sales conversion by tracking cumulative unit sales achieved across all 3 streaming sessions',
+    weightage: 25,
+    isOfficialOnly: true,
+    ratings: {
+      5: {
+        score: 5,
+        summary: '> 40 Units Sold',
+        points: [
+          'Sales of more than 40 units'
+        ]
+      },
+      4: {
+        score: 4,
+        summary: '31 – 40 Units Sold',
+        points: [
+          'Sales of 31 to 40 units'
+        ]
+      },
+      3: {
+        score: 3,
+        summary: '21 – 30 Units Sold',
+        points: [
+          'Sales of 21 - 30 units'
+        ]
+      },
+      2: {
+        score: 2,
+        summary: '11 – 20 Units Sold',
+        points: [
+          'Sales of 11-20 units'
+        ]
+      },
+      1: {
+        score: 1,
+        summary: '1 – 10 Units Sold',
+        points: [
+          'Sales of 1-10 units'
+        ]
+      },
+      0: {
+        score: 0,
+        summary: 'No Sales',
+        points: [
+          'No sales'
         ]
       }
     }

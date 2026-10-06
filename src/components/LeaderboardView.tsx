@@ -275,11 +275,21 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                 <th className="p-4 w-28 text-center">Score / 5.0</th>
                 <th className="p-4 w-24 text-center">Overall %</th>
                 <th className="p-4 w-36 text-center">Tier</th>
-                {criteria.map((c) => (
-                  <th key={c.id} className="p-4 w-24 text-center">
-                    {c.title.split(' ')[0]} ({c.weightage}%)
-                  </th>
-                ))}
+                {criteria.map((c) => {
+                  const isSales = c.id === 'sales';
+                  return (
+                    <th
+                      key={c.id}
+                      className={`p-4 w-24 text-center ${
+                        isSales
+                          ? 'bg-yellow-500/20 text-yellow-400 border-x border-yellow-500/30 font-black'
+                          : ''
+                      }`}
+                    >
+                      {c.title.split(' ')[0]} ({c.weightage}%)
+                    </th>
+                  );
+                })}
                 <th className="p-4 w-28 text-center">Status</th>
                 <th className="p-4 w-20 text-center">Action</th>
               </tr>
@@ -351,14 +361,24 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                     {/* Individual Criteria Ratings */}
                     {criteria.map((c) => {
                       const scoreVal = evaluation?.scores[c.id];
+                      const isSales = c.id === 'sales';
                       return (
-                        <td key={c.id} className="p-4 text-center font-mono">
+                        <td
+                          key={c.id}
+                          className={`p-4 text-center font-mono ${
+                            isSales ? 'bg-yellow-500/10 border-x border-yellow-500/20' : ''
+                          }`}
+                        >
                           {scoreVal !== undefined && scoreVal !== null ? (
-                            <span className="font-bold text-slate-800 dark:text-slate-200">
+                            <span
+                              className={`font-bold ${
+                                isSales ? 'text-yellow-400 font-black' : 'text-slate-800 dark:text-slate-200'
+                              }`}
+                            >
                               {scoreVal}/5
                             </span>
                           ) : (
-                            <span className="text-slate-300 dark:text-slate-600">-</span>
+                            <span className="text-slate-400 dark:text-slate-600 italic text-[11px]">-</span>
                           )}
                         </td>
                       );

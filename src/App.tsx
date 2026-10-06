@@ -10,8 +10,8 @@ import { ScoreSummaryCard } from './components/ScoreSummaryCard';
 import { LeaderboardView } from './components/LeaderboardView';
 import { RubricMatrixModal } from './components/RubricMatrixModal';
 
-const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v3';
-const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v3';
+const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v4';
+const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v4';
 const JUDGE_NAME_STORAGE_KEY = 'rubric_judging_judge_name_v1';
 
 export default function App() {

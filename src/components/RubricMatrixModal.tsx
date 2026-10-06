@@ -15,7 +15,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const scoreRatings: ScoreRating[] = [0, 1, 2, 3, 4, 5];
+  const scoreRatings: ScoreRating[] = [5, 4, 3, 2, 1, 0];
 
   const handlePrint = () => {
     window.print();
@@ -23,7 +23,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-6xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-7xl max-h-[92vh] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Modal Header */}
         <div className="p-5 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-950">
           <div className="flex items-center gap-3">
@@ -59,35 +59,35 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 
         {/* Scrollable Matrix Table */}
         <div className="p-4 sm:p-6 overflow-auto flex-1 scrollbar-thin">
-          <div className="min-w-[900px] border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden text-xs">
+          <div className="min-w-[1000px] border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden text-xs">
             <table className="w-full border-collapse text-left">
               <thead>
                 <tr className="bg-slate-900 text-white divide-x divide-slate-800">
                   <th className="p-3.5 w-36 font-bold uppercase tracking-wider">Criteria</th>
                   <th className="p-3.5 w-48 font-bold uppercase tracking-wider">Description</th>
-                  <th className="p-3.5 w-32 text-center font-bold bg-slate-900 text-slate-400">
-                    0<br />
-                    <span className="text-[10px] font-normal text-slate-400">None</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-slate-850 text-slate-300">
-                    1<br />
-                    <span className="text-[10px] font-normal text-slate-400">Extreme</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-300">
-                    2<br />
-                    <span className="text-[10px] font-normal text-slate-400">Low</span>
-                  </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-200">
-                    3<br />
-                    <span className="text-[10px] font-normal text-slate-300">Good</span>
+                  <th className="p-3.5 w-36 text-center font-bold bg-amber-900 text-amber-100">
+                    5<br />
+                    <span className="text-[10px] font-normal text-amber-200">Flawless / High</span>
                   </th>
                   <th className="p-3.5 w-36 text-center font-bold bg-amber-950 text-amber-200">
                     4<br />
-                    <span className="text-[10px] font-normal text-amber-300">High</span>
+                    <span className="text-[10px] font-normal text-amber-300">High / Natural</span>
                   </th>
-                  <th className="p-3.5 w-36 text-center font-bold bg-amber-900 text-amber-100">
-                    5<br />
-                    <span className="text-[10px] font-normal text-amber-200">Flawless</span>
+                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-200">
+                    3<br />
+                    <span className="text-[10px] font-normal text-slate-300">Good / Consistent</span>
+                  </th>
+                  <th className="p-3.5 w-36 text-center font-bold bg-slate-800 text-slate-300">
+                    2<br />
+                    <span className="text-[10px] font-normal text-slate-400">Low / Minimal</span>
+                  </th>
+                  <th className="p-3.5 w-36 text-center font-bold bg-slate-850 text-slate-300">
+                    1<br />
+                    <span className="text-[10px] font-normal text-slate-400">Extreme / Generic</span>
+                  </th>
+                  <th className="p-3.5 w-32 text-center font-bold bg-slate-900 text-slate-400">
+                    0<br />
+                    <span className="text-[10px] font-normal text-slate-400">None / Unable</span>
                   </th>
                   <th className="p-3.5 w-24 text-center font-bold bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950">
                     Weightage
@@ -95,55 +95,98 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-800 dark:text-slate-200">
-                {criteria.map((crit) => (
-                  <tr
-                    key={crit.id}
-                    className="divide-x divide-slate-200 dark:divide-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
-                  >
-                    {/* Title */}
-                    <td className="p-3.5 font-extrabold bg-slate-50/80 dark:bg-slate-900/80">
-                      {crit.title}
-                    </td>
+                {criteria.map((crit) => {
+                  const isSales = crit.id === 'sales';
 
-                    {/* Description */}
-                    <td className="p-3.5 text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                      {crit.description}
-                    </td>
+                  return (
+                    <tr
+                      key={crit.id}
+                      className={`divide-x divide-slate-200 dark:divide-slate-800 transition-colors ${
+                        isSales
+                          ? 'bg-yellow-400 text-slate-950 font-medium border-t-2 border-b-2 border-yellow-500'
+                          : 'hover:bg-slate-50/50 dark:hover:bg-slate-800/30'
+                      }`}
+                    >
+                      {/* Title */}
+                      <td
+                        className={`p-3.5 font-extrabold ${
+                          isSales
+                            ? 'bg-yellow-400 text-slate-950'
+                            : 'bg-slate-50/80 dark:bg-slate-900/80'
+                        }`}
+                      >
+                        <div className="flex flex-col gap-1">
+                          <span>{crit.title}</span>
+                          {isSales && (
+                            <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-slate-950 text-yellow-300 inline-block w-fit">
+                              Official Use Only
+                            </span>
+                          )}
+                        </div>
+                      </td>
 
-                    {/* Score Ratings 5 down to 0 */}
-                    {scoreRatings.map((ratingVal) => {
-                      const desc = crit.ratings[ratingVal];
-                      return (
-                        <td
-                          key={ratingVal}
-                          className={`p-3.5 align-top leading-relaxed text-[11px] ${
-                            ratingVal === 5
-                              ? 'bg-blue-50/60 dark:bg-blue-950/20'
-                              : ratingVal === 4
-                              ? 'bg-blue-50/30 dark:bg-blue-950/10'
-                              : 'bg-white dark:bg-slate-900'
-                          }`}
-                        >
-                          <div className="font-bold mb-1 text-slate-900 dark:text-white">
-                            {desc.summary}
-                          </div>
-                          <ul className="space-y-1 list-disc list-inside text-slate-600 dark:text-slate-300">
-                            {desc.points.map((pt, i) => (
-                              <li key={i} className="leading-tight">
-                                {pt}
-                              </li>
-                            ))}
-                          </ul>
-                        </td>
-                      );
-                    })}
+                      {/* Description */}
+                      <td
+                        className={`p-3.5 leading-relaxed font-medium ${
+                          isSales
+                            ? 'text-slate-900 font-semibold'
+                            : 'text-slate-600 dark:text-slate-400'
+                        }`}
+                      >
+                        {crit.description}
+                      </td>
 
-                    {/* Weightage */}
-                    <td className="p-3.5 text-center font-mono font-black text-base text-blue-600 dark:text-blue-400 bg-blue-50/40 dark:bg-blue-950/20">
-                      {crit.weightage}%
-                    </td>
-                  </tr>
-                ))}
+                      {/* Score Ratings 5 down to 0 */}
+                      {scoreRatings.map((ratingVal) => {
+                        const desc = crit.ratings[ratingVal];
+                        return (
+                          <td
+                            key={ratingVal}
+                            className={`p-3.5 align-top leading-relaxed text-[11px] ${
+                              isSales
+                                ? 'bg-yellow-300/80 text-slate-950'
+                                : ratingVal === 5
+                                ? 'bg-amber-500/10 dark:bg-amber-950/20'
+                                : ratingVal === 4
+                                ? 'bg-amber-500/5 dark:bg-amber-950/10'
+                                : 'bg-white dark:bg-slate-900'
+                            }`}
+                          >
+                            <div
+                              className={`font-bold mb-1 ${
+                                isSales ? 'text-slate-950 font-black' : 'text-slate-900 dark:text-white'
+                              }`}
+                            >
+                              {desc.summary}
+                            </div>
+                            <ul
+                              className={`space-y-1 list-disc list-inside ${
+                                isSales ? 'text-slate-900' : 'text-slate-600 dark:text-slate-300'
+                              }`}
+                            >
+                              {desc.points.map((pt, i) => (
+                                <li key={i} className="leading-tight">
+                                  {pt}
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                        );
+                      })}
+
+                      {/* Weightage */}
+                      <td
+                        className={`p-3.5 text-center font-mono font-black text-base ${
+                          isSales
+                            ? 'bg-yellow-500 text-slate-950 font-black'
+                            : 'text-amber-500 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-950/20'
+                        }`}
+                      >
+                        {crit.weightage}%
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -151,7 +194,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 
         {/* Modal Footer */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <div>Total Evaluation Scale: 100% Weightage Across 4 Criteria</div>
+          <div>Total Evaluation Scale: 100% Weightage Across 7 Criteria (Including 25% Official Sales)</div>
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-bold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"

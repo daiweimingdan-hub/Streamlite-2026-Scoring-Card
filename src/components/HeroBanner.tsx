@@ -77,44 +77,74 @@ export const HeroBanner: React.FC = () => {
 
         {/* Feature Highlights Bar when expanded */}
         {!isCollapsed && (
-          <div className="mt-6 pt-5 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
-                30%
+          <div className="mt-6 pt-5 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 text-xs">
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0">
+                15%
               </div>
-              <div>
-                <p className="font-extrabold text-slate-100">Product & Value</p>
-                <p className="text-[10px] text-slate-400">Confidence & Offer</p>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Delivery</p>
+                <p className="text-[9px] text-slate-400 truncate">Showmanship</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs shrink-0">
+                10%
+              </div>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Creativity</p>
+                <p className="text-[9px] text-slate-400 truncate">Storytelling</p>
+              </div>
+            </div>
+
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs shrink-0">
                 20%
               </div>
-              <div>
-                <p className="font-extrabold text-slate-100">Structure & Flow</p>
-                <p className="text-[10px] text-slate-400">Pacing & Theme</p>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Engagement</p>
+                <p className="text-[9px] text-slate-400 truncate">Live Chat & Crowd</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">
-                30%
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
+                10%
               </div>
-              <div>
-                <p className="font-extrabold text-slate-100">Communication</p>
-                <p className="text-[10px] text-slate-400">Presenter Persona</p>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Communication</p>
+                <p className="text-[9px] text-slate-400 truncate">Articulation</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
-                20%
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
+                10%
               </div>
-              <div>
-                <p className="font-extrabold text-slate-100">Technical Setup</p>
-                <p className="text-[10px] text-slate-400">Audio, Lighting & Video</p>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Technical</p>
+                <p className="text-[9px] text-slate-400 truncate">Audio & Visuals</p>
+              </div>
+            </div>
+
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xs shrink-0">
+                10%
+              </div>
+              <div className="min-w-0">
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Citizenship</p>
+                <p className="text-[9px] text-slate-400 truncate">Professionalism</p>
+              </div>
+            </div>
+
+            <div className="p-2.5 rounded-2xl bg-yellow-950/70 border border-yellow-500/60 backdrop-blur-md flex items-center gap-2 ring-1 ring-yellow-500/30">
+              <div className="w-7 h-7 rounded-lg bg-yellow-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
+                25%
+              </div>
+              <div className="min-w-0">
+                <p className="font-black text-yellow-300 truncate text-[11px]">Sales (Units)</p>
+                <p className="text-[9px] text-yellow-400/80 truncate font-semibold">Official Use Only</p>
               </div>
             </div>
           </div>

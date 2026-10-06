@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { RubricCriterion, ScoreRating } from '../types';
 import { CriteriaHoverTooltip } from './CriteriaHoverTooltip';
-import { Info, Sparkles } from 'lucide-react';
+import { Info, Sparkles, Lock } from 'lucide-react';
 
 interface ScoreButtonKeypadProps {
   criterion: RubricCriterion;
   selectedScore: ScoreRating | null;
   onSelectScore: (score: ScoreRating) => void;
+  isLocked?: boolean;
+  onAttemptLockedClick?: () => void;
+  passwordSlot?: React.ReactNode;
 }
 
 export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
   criterion,
   selectedScore,
   onSelectScore,
+  isLocked = false,
+  onAttemptLockedClick,
+  passwordSlot,
 }) => {
   const [hoveredScore, setHoveredScore] = useState<ScoreRating | null>(null);
 
@@ -23,6 +29,10 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
       return 'border-2 border-amber-400 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black shadow-lg shadow-amber-500/20 scale-105';
     }
 
+    if (isLocked) {
+      return 'border-2 border-slate-800 bg-slate-900/60 text-slate-400 font-bold hover:border-yellow-500/40 hover:bg-slate-800/80';
+    }
+
     return 'border-2 border-slate-700 bg-slate-900 text-slate-300 font-bold hover:border-cyan-400 hover:text-cyan-300 hover:bg-slate-800 hover:shadow-sm';
   };
 
@@ -31,7 +41,7 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
   return (
     <div className="space-y-3">
       {/* Score Buttons Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1">
             Score:
@@ -51,21 +61,29 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
                 <button
                   id={`btn-score-${criterion.id}-${scoreVal}`}
                   type="button"
-                  onClick={() => onSelectScore(scoreVal)}
+                  onClick={() => {
+                    if (isLocked) {
+                      onAttemptLockedClick?.();
+                      return;
+                    }
+                    onSelectScore(scoreVal);
+                  }}
                   aria-label={`Assign score ${scoreVal} out of 5 for ${criterion.title}`}
                   aria-pressed={isSelected}
-                  className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl transition-all duration-150 flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 active:scale-95 ${getScoreStyle(
-                    scoreVal,
-                    isSelected
-                  )}`}
+                  className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl transition-all duration-150 flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 active:scale-95 ${
+                    isLocked ? 'cursor-pointer hover:ring-1 hover:ring-yellow-400' : ''
+                  } ${getScoreStyle(scoreVal, isSelected)}`}
                 >
                   <span className="text-base">{scoreVal}</span>
+                  {isLocked && !isSelected && (
+                    <Lock className="w-2.5 h-2.5 text-yellow-500/80 absolute top-1 right-1" />
+                  )}
                   {scoreVal === 5 && isSelected && (
                     <Sparkles className="w-3 h-3 text-amber-300 animate-pulse" />
                   )}
                 </button>
 
-                {/* Hover Tooltip */}
+                {/* Hover Tooltip - always works to see marking criteria */}
                 <CriteriaHoverTooltip
                   score={scoreVal}
                   weightage={criterion.weightage}
@@ -76,10 +94,17 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
               </div>
             );
           })}
+
+          {/* Password Slot Beside Buttons (for official Sales use) */}
+          {passwordSlot && (
+            <div className="inline-flex items-center my-1 sm:my-0">
+              {passwordSlot}
+            </div>
+          )}
         </div>
 
         {/* Selected Score Indicator Badge */}
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start xl:self-auto">
           {selectedScore !== null ? (
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-950/80 text-amber-300 border border-amber-500/40 text-xs font-semibold">
               <span className="uppercase text-[10px] font-black text-amber-400">Selected:</span>
@@ -91,7 +116,7 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
           ) : (
             <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
               <Info className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-              <span>Press or click 0–5</span>
+              <span>{isLocked ? 'Official password required' : 'Press or click 0–5'}</span>
             </div>
           )}
         </div>

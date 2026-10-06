@@ -1,8 +1,11 @@
 export type CriterionId = 
-  | 'product_knowledge' 
-  | 'structure_flow' 
-  | 'communication' 
-  | 'technical_execution';
+  | 'delivery_showmanship' 
+  | 'content_creativity' 
+  | 'audience_engagement' 
+  | 'communication_skills' 
+  | 'technical_execution' 
+  | 'digital_citizenship' 
+  | 'sales';
 
 export type ScoreRating = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -16,8 +19,9 @@ export interface RubricCriterion {
   id: CriterionId;
   title: string;
   description: string;
-  weightage: number; // percentage, e.g., 30 for 30%
+  weightage: number; // percentage, e.g., 25 for 25%
   ratings: Record<ScoreRating, RatingDescriptor>;
+  isOfficialOnly?: boolean;
 }
 
 export interface Team {
