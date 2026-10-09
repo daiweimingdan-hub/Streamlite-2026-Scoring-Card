@@ -432,10 +432,14 @@ export function calculateWeightedScore(scores: Partial<Record<string, number>>):
   let completeCount = 0;
   const breakdown: Record<string, { raw: number | null; weighted: number }> = {};
 
+  const enterableCriteria = RUBRIC_CRITERIA.filter(c => !c.isOfficialOnly);
+
   RUBRIC_CRITERIA.forEach(crit => {
     const score = scores[crit.id];
     if (score !== undefined && score !== null) {
-      completeCount++;
+      if (!crit.isOfficialOnly) {
+        completeCount++;
+      }
       const weightedContrib = (score / 5) * (crit.weightage / 100) * 5; // out of 5
       totalWeighted += weightedContrib;
       breakdown[crit.id] = { raw: score, weighted: weightedContrib };
@@ -444,7 +448,8 @@ export function calculateWeightedScore(scores: Partial<Record<string, number>>):
     }
   });
 
-  const isComplete = completeCount === RUBRIC_CRITERIA.length;
+  // Considered complete if all 6 regular criteria are evaluated
+  const isComplete = completeCount === enterableCriteria.length;
   const percentage = (totalWeighted / 5) * 100;
 
   return {

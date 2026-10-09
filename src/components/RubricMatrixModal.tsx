@@ -96,43 +96,20 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-800 dark:text-slate-200">
                 {criteria.map((crit) => {
-                  const isSales = crit.id === 'sales';
-
                   return (
                     <tr
                       key={crit.id}
-                      className={`divide-x divide-slate-200 dark:divide-slate-800 transition-colors ${
-                        isSales
-                          ? 'bg-yellow-400 text-slate-950 font-medium border-t-2 border-b-2 border-yellow-500'
-                          : 'hover:bg-slate-50/50 dark:hover:bg-slate-800/30'
-                      }`}
+                      className="divide-x divide-slate-200 dark:divide-slate-800 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30"
                     >
                       {/* Title */}
-                      <td
-                        className={`p-3.5 font-extrabold ${
-                          isSales
-                            ? 'bg-yellow-400 text-slate-950'
-                            : 'bg-slate-50/80 dark:bg-slate-900/80'
-                        }`}
-                      >
+                      <td className="p-3.5 font-extrabold bg-slate-50/80 dark:bg-slate-900/80">
                         <div className="flex flex-col gap-1">
                           <span>{crit.title}</span>
-                          {isSales && (
-                            <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-slate-950 text-yellow-300 inline-block w-fit">
-                              Official Use Only
-                            </span>
-                          )}
                         </div>
                       </td>
 
                       {/* Description */}
-                      <td
-                        className={`p-3.5 leading-relaxed font-medium ${
-                          isSales
-                            ? 'text-slate-900 font-semibold'
-                            : 'text-slate-600 dark:text-slate-400'
-                        }`}
-                      >
+                      <td className="p-3.5 leading-relaxed font-medium text-slate-600 dark:text-slate-400">
                         {crit.description}
                       </td>
 
@@ -143,27 +120,17 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
                           <td
                             key={ratingVal}
                             className={`p-3.5 align-top leading-relaxed text-[11px] ${
-                              isSales
-                                ? 'bg-yellow-300/80 text-slate-950'
-                                : ratingVal === 5
+                              ratingVal === 5
                                 ? 'bg-amber-500/10 dark:bg-amber-950/20'
                                 : ratingVal === 4
                                 ? 'bg-amber-500/5 dark:bg-amber-950/10'
                                 : 'bg-white dark:bg-slate-900'
                             }`}
                           >
-                            <div
-                              className={`font-bold mb-1 ${
-                                isSales ? 'text-slate-950 font-black' : 'text-slate-900 dark:text-white'
-                              }`}
-                            >
+                            <div className="font-bold mb-1 text-slate-900 dark:text-white">
                               {desc.summary}
                             </div>
-                            <ul
-                              className={`space-y-1 list-disc list-inside ${
-                                isSales ? 'text-slate-900' : 'text-slate-600 dark:text-slate-300'
-                              }`}
-                            >
+                            <ul className="space-y-1 list-disc list-inside text-slate-600 dark:text-slate-300">
                               {desc.points.map((pt, i) => (
                                 <li key={i} className="leading-tight">
                                   {pt}
@@ -175,13 +142,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
                       })}
 
                       {/* Weightage */}
-                      <td
-                        className={`p-3.5 text-center font-mono font-black text-base ${
-                          isSales
-                            ? 'bg-yellow-500 text-slate-950 font-black'
-                            : 'text-amber-500 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-950/20'
-                        }`}
-                      >
+                      <td className="p-3.5 text-center font-mono font-black text-base text-amber-500 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-950/20">
                         {crit.weightage}%
                       </td>
                     </tr>
@@ -194,7 +155,7 @@ export const RubricMatrixModal: React.FC<RubricMatrixModalProps> = ({
 
         {/* Modal Footer */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <div>Total Evaluation Scale: 100% Weightage (6 × 15% Core Criteria + 10% Official Sales)</div>
+          <div>Total Evaluation Scale: 100% Weightage (6 × 15% + 10% Sales)</div>
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-bold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"

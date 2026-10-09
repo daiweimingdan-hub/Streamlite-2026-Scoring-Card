@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RubricCriterion, ScoreRating, Team, TeamEvaluation } from '../types';
 import { ScoreButtonKeypad } from './ScoreButtonKeypad';
-import { Keyboard, CheckCircle, Lightbulb, Lock, Unlock, ShieldAlert, Check } from 'lucide-react';
+import { Keyboard, CheckCircle, Lightbulb } from 'lucide-react';
 
 interface ScoringSheetProps {
   team: Team;
@@ -21,21 +21,6 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
   onUpdateGeneralFeedback,
 }) => {
   const [activeCriterionId, setActiveCriterionId] = useState<string>(criteria[0]?.id || '');
-  const [salesPassword, setSalesPassword] = useState<string>(() => {
-    try {
-      return localStorage.getItem('rubric_official_sales_password') || '';
-    } catch {
-      return '';
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('rubric_official_sales_password', salesPassword);
-    } catch {}
-  }, [salesPassword]);
-
-  const isSalesUnlocked = salesPassword === '0000';
 
   // Keyboard shortcut listener to key in 0, 1, 2, 3, 4, 5 directly
   useEffect(() => {
@@ -47,7 +32,8 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
       if (['0', '1', '2', '3', '4', '5'].includes(e.key)) {
         const numVal = parseInt(e.key, 10) as ScoreRating;
         if (activeCriterionId) {
-          if (activeCriterionId === 'sales' && !isSalesUnlocked) {
+          // Sales criterion does not allow entry
+          if (activeCriterionId === 'sales') {
             return;
           }
           onUpdateScore(activeCriterionId, numVal);
@@ -57,7 +43,7 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeCriterionId, onUpdateScore, isSalesUnlocked]);
+  }, [activeCriterionId, onUpdateScore]);
 
   return (
     <div className="space-y-6">
@@ -108,7 +94,6 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
           const currentScore = evaluation.scores[crit.id] ?? null;
           const isActive = activeCriterionId === crit.id;
           const isSales = crit.id === 'sales';
-          const isLocked = isSales && !isSalesUnlocked;
 
           return (
             <div
@@ -116,61 +101,34 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
               id={`criterion-card-${crit.id}`}
               onClick={() => setActiveCriterionId(crit.id)}
               className={`p-6 rounded-3xl transition-all duration-200 space-y-4 ${
-                isSales
-                  ? isActive
-                    ? 'bg-gradient-to-br from-yellow-950/80 via-amber-950/60 to-slate-900 border-2 border-yellow-400 ring-2 ring-yellow-400/30 shadow-2xl shadow-yellow-500/10'
-                    : 'bg-gradient-to-br from-yellow-950/50 via-amber-950/40 to-slate-900 border-2 border-yellow-500/60 hover:border-yellow-400/80'
-                  : isActive
+                isActive
                   ? 'bg-slate-900 border-amber-500/80 ring-2 ring-amber-500/20 shadow-xl shadow-amber-500/5'
                   : 'bg-slate-900 border-slate-800 hover:border-slate-700'
               }`}
             >
               {/* Criterion Header */}
               <div
-                className={`flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3 border-b ${
-                  isSales ? 'border-yellow-500/30' : 'border-slate-800'
+                className={`flex flex-col sm:flex-row sm:items-start justify-between gap-3 ${
+                  !isSales ? 'pb-3 border-b border-slate-800' : ''
                 }`}
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span
-                      className={`w-6 h-6 rounded-lg font-black text-xs flex items-center justify-center shrink-0 ${
-                        isSales ? 'bg-yellow-400 text-slate-950' : 'bg-amber-500/20 text-amber-400'
-                      }`}
-                    >
+                    <span className="w-6 h-6 rounded-lg font-black text-xs flex items-center justify-center shrink-0 bg-amber-500/20 text-amber-400">
                       {index + 1}
                     </span>
-                    <h3
-                      className={`text-base font-extrabold ${
-                        isSales ? 'text-yellow-300' : 'text-white'
-                      }`}
-                    >
+                    <h3 className="text-base font-extrabold text-white">
                       {crit.title}
                     </h3>
-                    {isSales && (
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-yellow-400 text-slate-950 flex items-center gap-1 shadow-sm">
-                        <ShieldAlert className="w-3 h-3 text-slate-950" /> Official Use Only
-                      </span>
-                    )}
                   </div>
-                  <p
-                    className={`text-xs leading-relaxed max-w-2xl ${
-                      isSales ? 'text-yellow-100/80 font-medium' : 'text-slate-400'
-                    }`}
-                  >
+                  <p className="text-xs leading-relaxed max-w-2xl text-slate-400">
                     {crit.description}
                   </p>
                 </div>
 
                 {/* Weightage Tag */}
                 <div className="shrink-0 flex items-center gap-2 self-start">
-                  <span
-                    className={`px-3 py-1 rounded-xl text-xs font-bold font-mono border ${
-                      isSales
-                        ? 'bg-yellow-500 text-slate-950 border-yellow-400 shadow-sm font-black'
-                        : 'bg-slate-800 text-cyan-300 border border-slate-700'
-                    }`}
-                  >
+                  <span className="px-3 py-1 rounded-xl text-xs font-bold font-mono border bg-slate-800 text-cyan-300 border-slate-700">
                     Weightage: {crit.weightage}%
                   </span>
                   {currentScore !== null && (
@@ -181,50 +139,17 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
                 </div>
               </div>
 
-              {/* Score Keypad & Hover Criteria Descriptions */}
-              <ScoreButtonKeypad
-                criterion={crit}
-                selectedScore={currentScore}
-                isLocked={isLocked}
-                onAttemptLockedClick={() => {
-                  document.getElementById('sales-official-pin-input')?.focus();
-                }}
-                passwordSlot={
-                  isSales ? (
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-xl bg-slate-950/90 border border-yellow-500/50 shadow-inner">
-                      <div className="flex items-center text-yellow-400 shrink-0">
-                        {isSalesUnlocked ? (
-                          <Unlock className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Lock className="w-3.5 h-3.5 text-yellow-400" />
-                        )}
-                      </div>
-                      <input
-                        type="password"
-                        id="sales-official-pin-input"
-                        value={salesPassword}
-                        onChange={(e) => setSalesPassword(e.target.value)}
-                        placeholder="••••"
-                        maxLength={10}
-                        aria-label="Official verification"
-                        className="w-16 px-2 py-0.5 rounded-lg border border-yellow-500/40 bg-slate-900 text-yellow-300 font-mono text-xs text-center focus:outline-none focus:ring-1 focus:ring-yellow-400 placeholder:text-slate-600"
-                      />
-                      {isSalesUnlocked && (
-                        <span className="p-0.5 rounded text-emerald-400">
-                          <Check className="w-3.5 h-3.5" />
-                        </span>
-                      )}
-                    </div>
-                  ) : undefined
-                }
-                onSelectScore={(score) => {
-                  setActiveCriterionId(crit.id);
-                  if (isSales && !isSalesUnlocked) {
-                    return;
-                  }
-                  onUpdateScore(crit.id, score);
-                }}
-              />
+              {/* Score Keypad (Not displayed for sales) */}
+              {!isSales && (
+                <ScoreButtonKeypad
+                  criterion={crit}
+                  selectedScore={currentScore}
+                  onSelectScore={(score) => {
+                    setActiveCriterionId(crit.id);
+                    onUpdateScore(crit.id, score);
+                  }}
+                />
+              )}
             </div>
           );
         })}

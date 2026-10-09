@@ -138,13 +138,13 @@ export const HeroBanner: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-2.5 rounded-2xl bg-yellow-950/70 border border-yellow-500/60 backdrop-blur-md flex items-center gap-2 ring-1 ring-yellow-500/30">
-              <div className="w-7 h-7 rounded-lg bg-yellow-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0">
                 10%
               </div>
               <div className="min-w-0">
-                <p className="font-black text-yellow-300 truncate text-[11px]">Sales (Units)</p>
-                <p className="text-[9px] text-yellow-400/80 truncate font-semibold">Official Use Only</p>
+                <p className="font-extrabold text-slate-100 truncate text-[11px]">Sales</p>
+                <p className="text-[9px] text-slate-400 truncate">Units Sold</p>
               </div>
             </div>
           </div>

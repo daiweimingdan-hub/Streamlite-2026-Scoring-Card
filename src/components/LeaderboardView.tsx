@@ -100,8 +100,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       // Add each criterion column
       criteria.forEach((c) => {
         const val = evaluation?.scores[c.id];
+        const isSales = c.id === 'sales';
         rowData[`${c.title} (${c.weightage}%)`] =
-          val !== undefined && val !== null ? val : 'Unrated';
+          val !== undefined && val !== null
+            ? val
+            : isSales
+            ? 'N/A'
+            : 'Unrated';
       });
 
       rowData['General Feedback'] = evaluation?.generalFeedback || '';
@@ -142,13 +147,14 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
           : 'N/A';
         const note = evaluation?.notes?.[c.id] || '';
 
+        const isSales = c.id === 'sales';
         breakdownRows.push({
           'No.': index + 1,
           'Company': team.name,
           'Criterion': c.title,
           'Weightage (%)': c.weightage,
-          'Assigned Score (0-5)': hasScore ? scoreVal : 'Unrated',
-          'Weighted Contribution (%)': hasScore ? Number(weightedPct) : 'N/A',
+          'Assigned Score (0-5)': hasScore ? scoreVal : isSales ? 'N/A' : 'Unrated',
+          'Weighted Contribution (%)': hasScore ? Number(weightedPct) : isSales ? 'N/A' : 'N/A',
           'Criterion Remark': note,
         });
       });
@@ -373,20 +379,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                     {/* Individual Criteria Ratings */}
                     {criteria.map((c) => {
                       const scoreVal = evaluation?.scores[c.id];
-                      const isSales = c.id === 'sales';
                       return (
                         <td
                           key={c.id}
-                          className={`p-4 text-center font-mono ${
-                            isSales ? 'bg-yellow-500/10 border-x border-yellow-500/20' : ''
-                          }`}
+                          className="p-4 text-center font-mono"
                         >
                           {scoreVal !== undefined && scoreVal !== null ? (
-                            <span
-                              className={`font-bold ${
-                                isSales ? 'text-yellow-400 font-black' : 'text-slate-800 dark:text-slate-200'
-                              }`}
-                            >
+                            <span className="font-bold text-slate-800 dark:text-slate-200">
                               {scoreVal}/5
                             </span>
                           ) : (

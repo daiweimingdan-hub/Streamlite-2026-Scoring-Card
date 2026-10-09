@@ -109,6 +109,7 @@ export const ScoreSummaryCard: React.FC<ScoreSummaryCardProps> = ({
         </h4>
         <div className="space-y-2">
           {criteria.map((crit) => {
+            const isSales = crit.id === 'sales';
             const rawScore = evaluation.scores[crit.id];
             const hasScore = rawScore !== undefined && rawScore !== null;
             const weightedContribution = hasScore
@@ -119,7 +120,7 @@ export const ScoreSummaryCard: React.FC<ScoreSummaryCardProps> = ({
             return (
               <div key={crit.id} className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-200 font-semibold truncate max-w-[160px]">
+                  <span className="font-semibold truncate max-w-[160px] text-slate-200">
                     {crit.title}
                   </span>
                   <div className="font-mono text-xs font-bold text-slate-200">
@@ -130,6 +131,10 @@ export const ScoreSummaryCard: React.FC<ScoreSummaryCardProps> = ({
                           (+{weightedContribution})
                         </span>
                       </span>
+                    ) : isSales ? (
+                      <span className="text-slate-400 font-normal text-[11px]">
+                        No entry
+                      </span>
                     ) : (
                       <span className="text-slate-500 italic font-normal text-[11px]">Unrated</span>
                     )}
@@ -138,7 +143,9 @@ export const ScoreSummaryCard: React.FC<ScoreSummaryCardProps> = ({
                 <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 rounded-full ${
-                      hasScore ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-transparent'
+                      hasScore
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-500'
+                        : 'bg-transparent'
                     }`}
                     style={{ width: `${progressPct}%` }}
                   />
