@@ -10,8 +10,8 @@ import { ScoreSummaryCard } from './components/ScoreSummaryCard';
 import { LeaderboardView } from './components/LeaderboardView';
 import { RubricMatrixModal } from './components/RubricMatrixModal';
 
-const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v4';
-const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v4';
+const TEAMS_STORAGE_KEY = 'rubric_judging_teams_v5';
+const EVALUATIONS_STORAGE_KEY = 'rubric_judging_evaluations_v5';
 const JUDGE_NAME_STORAGE_KEY = 'rubric_judging_judge_name_v1';
 
 export default function App() {
@@ -22,11 +22,14 @@ export default function App() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // If previous teams had old sample names or old descriptions, reset to INITIAL_TEAMS
+          // If previous teams had old sample names or without brand names, reset to INITIAL_TEAMS
           const hasOldData = parsed.some(
             (t: Team) =>
               t.name === 'Team Horizon' ||
               t.name === 'BioPulse Tech' ||
+              t.name === 'Calmora' ||
+              t.name === 'Trinity' ||
+              t.name === 'Minions' ||
               Boolean(t.projectTitle && t.projectTitle.includes('Mindful Wellness'))
           );
           if (!hasOldData) {

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { RubricCriterion, ScoreRating, Team, TeamEvaluation } from '../types';
 import { ScoreButtonKeypad } from './ScoreButtonKeypad';
-import { MessageSquare, Keyboard, CheckCircle, Lightbulb, Lock, Unlock, ShieldAlert, Check } from 'lucide-react';
+import { Keyboard, CheckCircle, Lightbulb, Lock, Unlock, ShieldAlert, Check } from 'lucide-react';
 
 interface ScoringSheetProps {
   team: Team;
   criteria: RubricCriterion[];
   evaluation: TeamEvaluation;
   onUpdateScore: (criterionId: string, score: ScoreRating) => void;
-  onUpdateNote: (criterionId: string, note: string) => void;
+  onUpdateNote?: (criterionId: string, note: string) => void;
   onUpdateGeneralFeedback: (feedback: string) => void;
 }
 
@@ -106,7 +106,6 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
       <div className="space-y-5">
         {criteria.map((crit, index) => {
           const currentScore = evaluation.scores[crit.id] ?? null;
-          const currentNote = evaluation.notes[crit.id] || '';
           const isActive = activeCriterionId === crit.id;
           const isSales = crit.id === 'sales';
           const isLocked = isSales && !isSalesUnlocked;
@@ -226,26 +225,6 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
                   onUpdateScore(crit.id, score);
                 }}
               />
-
-              {/* Criterion Specific Comments/Notes */}
-              <div className="pt-2">
-                <div
-                  className={`flex items-center gap-1.5 mb-1.5 text-xs font-bold ${
-                    isSales ? 'text-yellow-300' : 'text-amber-400'
-                  }`}
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Juror Remarks for {crit.title}:</span>
-                </div>
-                <textarea
-                  id={`note-input-${crit.id}`}
-                  value={currentNote}
-                  onChange={(e) => onUpdateNote(crit.id, e.target.value)}
-                  placeholder={`Optional constructive remarks regarding ${crit.title.toLowerCase()}...`}
-                  rows={2}
-                  className="w-full p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-100 text-xs focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all resize-y"
-                />
-              </div>
             </div>
           );
         })}

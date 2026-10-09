@@ -59,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Center: Session & Juror Info */}
+        {/* Center: Session & Judge Info */}
         <div className="flex items-center gap-4 bg-slate-900/90 p-2 px-4 rounded-2xl border border-slate-800 self-start md:self-auto backdrop-blur-md">
           <div className="text-left">
             <p className="text-[10px] text-amber-400/90 uppercase font-black tracking-widest flex items-center gap-1">
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div className="w-px h-7 bg-slate-800" />
 
-          {/* Juror Profile */}
+          {/* Judge Profile */}
           <div className="flex items-center gap-2.5">
             {isEditingJudge ? (
               <div className="flex items-center gap-1.5">
@@ -95,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div
                 onClick={() => setIsEditingJudge(true)}
                 className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-                title="Click to edit juror name"
+                title="Click to edit judge name"
               >
                 <div className="w-8 h-8 rounded-xl bg-slate-800 border border-amber-500/40 shadow-sm flex items-center justify-center text-amber-300 font-black text-xs">
                   <User className="w-4 h-4 text-cyan-400" />
@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <Edit2 className="w-2.5 h-2.5 text-slate-400" />
                   </p>
                   <p className="text-[10px] font-black text-cyan-400 uppercase tracking-wider">
-                    Official Juror
+                    Official Judge
                   </p>
                 </div>
               </div>
