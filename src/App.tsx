@@ -253,8 +253,6 @@ export default function App() {
               selectedTeamId={selectedTeamId}
               evaluations={evaluations}
               onSelectTeam={setSelectedTeamId}
-              onAddTeam={handleAddTeam}
-              onResetToDefaultTeams={handleResetToDefaultTeams}
             />
 
             {/* Main Scoring Grid */}
