@@ -116,7 +116,7 @@ export const ScoreButtonKeypad: React.FC<ScoreButtonKeypadProps> = ({
           ) : (
             <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
               <Info className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-              <span>{isLocked ? 'Official password required' : 'Press or click 0–5'}</span>
+              <span>{isLocked ? 'Official use' : 'Press or click 0–5'}</span>
             </div>
           )}
         </div>

@@ -90,7 +90,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs shrink-0">
-                10%
+                15%
               </div>
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-100 truncate text-[11px]">Creativity</p>
@@ -100,7 +100,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs shrink-0">
-                20%
+                15%
               </div>
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-100 truncate text-[11px]">Engagement</p>
@@ -110,7 +110,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
-                10%
+                15%
               </div>
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-100 truncate text-[11px]">Communication</p>
@@ -120,7 +120,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
-                10%
+                15%
               </div>
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-100 truncate text-[11px]">Technical</p>
@@ -130,7 +130,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-md flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xs shrink-0">
-                10%
+                15%
               </div>
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-100 truncate text-[11px]">Citizenship</p>
@@ -140,7 +140,7 @@ export const HeroBanner: React.FC = () => {
 
             <div className="p-2.5 rounded-2xl bg-yellow-950/70 border border-yellow-500/60 backdrop-blur-md flex items-center gap-2 ring-1 ring-yellow-500/30">
               <div className="w-7 h-7 rounded-lg bg-yellow-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
-                25%
+                10%
               </div>
               <div className="min-w-0">
                 <p className="font-black text-yellow-300 truncate text-[11px]">Sales (Units)</p>

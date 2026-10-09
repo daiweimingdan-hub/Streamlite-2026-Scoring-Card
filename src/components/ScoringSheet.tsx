@@ -192,15 +192,13 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
                 }}
                 passwordSlot={
                   isSales ? (
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/90 border border-yellow-500/50 shadow-inner">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-yellow-300 shrink-0">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-xl bg-slate-950/90 border border-yellow-500/50 shadow-inner">
+                      <div className="flex items-center text-yellow-400 shrink-0">
                         {isSalesUnlocked ? (
                           <Unlock className="w-3.5 h-3.5 text-emerald-400" />
                         ) : (
                           <Lock className="w-3.5 h-3.5 text-yellow-400" />
                         )}
-                        <span className="hidden sm:inline">Official Password:</span>
-                        <span className="sm:hidden">PIN:</span>
                       </div>
                       <input
                         type="password"
@@ -209,16 +207,12 @@ export const ScoringSheet: React.FC<ScoringSheetProps> = ({
                         onChange={(e) => setSalesPassword(e.target.value)}
                         placeholder="••••"
                         maxLength={10}
-                        className="w-20 px-2 py-0.5 rounded-lg border border-yellow-500/40 bg-slate-900 text-yellow-300 font-mono text-xs text-center focus:outline-none focus:ring-1 focus:ring-yellow-400 placeholder:text-slate-600"
+                        aria-label="Official verification"
+                        className="w-16 px-2 py-0.5 rounded-lg border border-yellow-500/40 bg-slate-900 text-yellow-300 font-mono text-xs text-center focus:outline-none focus:ring-1 focus:ring-yellow-400 placeholder:text-slate-600"
                       />
-                      {isSalesUnlocked ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-black bg-emerald-950 text-emerald-300 border border-emerald-500/50 flex items-center gap-1">
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="hidden sm:inline">Unlocked</span>
-                        </span>
-                      ) : (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-900 text-slate-400 border border-slate-700">
-                          Locked
+                      {isSalesUnlocked && (
+                        <span className="p-0.5 rounded text-emerald-400">
+                          <Check className="w-3.5 h-3.5" />
                         </span>
                       )}
                     </div>

@@ -60,7 +60,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'content_creativity',
     title: 'Content Creativity & Originality',
     description: 'Focuses on creativity and storytelling through factors like the uniqueness of ideas, presentation style and use of engaging themes or current trends',
-    weightage: 10,
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
@@ -115,7 +115,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'audience_engagement',
     title: 'Audience Engagement & Interaction',
     description: 'Measures engagement and interaction with the audience through factors like responsiveness to live comments, ability to drive participation and strategies to sustain viewer interest',
-    weightage: 20,
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
@@ -170,7 +170,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'communication_skills',
     title: 'Communication Skills',
     description: 'Evaluates clarity of speech, articulation, pacing and the ability to express ideas and features effectively',
-    weightage: 10,
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
@@ -225,7 +225,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'technical_execution',
     title: 'Technical Execution & Visuals',
     description: 'Focuses on production standards through factors like audio, framing, lighting and a smooth overall visual presentation',
-    weightage: 10,
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
@@ -280,7 +280,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'digital_citizenship',
     title: 'Digital Citizenship & Professionalism',
     description: 'Evaluates clarity and professionalism in online behaviour through factors like respectful language, positive brand attitude, and strict adherence to competition guidelines',
-    weightage: 10,
+    weightage: 15,
     ratings: {
       5: {
         score: 5,
@@ -336,7 +336,7 @@ export const RUBRIC_CRITERIA: RubricCriterion[] = [
     id: 'sales',
     title: 'Sales',
     description: 'Measures sales conversion by tracking cumulative unit sales achieved across all 3 streaming sessions',
-    weightage: 25,
+    weightage: 10,
     isOfficialOnly: true,
     ratings: {
       5: {
