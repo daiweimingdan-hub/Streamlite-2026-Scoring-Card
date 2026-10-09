@@ -12,6 +12,26 @@ interface LeaderboardViewProps {
   onClearAllEvaluations: () => void;
 }
 
+const FIXED_TEAM_ORDER = [
+  'Calmora (Olaplex)',
+  'Trinity (KFC)',
+  'Live-streaming Monkeys (Theo10)',
+  'Minions (Jaedals)',
+  'Peach Perfect (Xpressflower)',
+  'No 1 Glovers (Chuan Hong Seng)',
+];
+
+const getTeamOrderIndex = (name: string): number => {
+  const normalized = name.toLowerCase().trim();
+  const idx = FIXED_TEAM_ORDER.findIndex(
+    (target) =>
+      target.toLowerCase() === normalized ||
+      normalized.startsWith(target.toLowerCase().split(' ')[0]) ||
+      normalized.includes(target.toLowerCase().split(' ')[0])
+  );
+  return idx === -1 ? 999 : idx;
+};
+
 export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
   teams,
   evaluations,
@@ -22,7 +42,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
   const [search, setSearch] = useState('');
 
-  // Calculate scores for all teams
+  // Calculate scores for all teams, sorted strictly by requested order
   const rankedTeams = teams
     .map((team) => {
       const evaluation = evaluations[team.id];
@@ -46,7 +66,12 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       if (filter === 'pending') return matchesSearch && !result.isComplete;
       return matchesSearch;
     })
-    .sort((a, b) => b.result.scoreOutOfFive - a.result.scoreOutOfFive);
+    .sort((a, b) => {
+      const orderA = getTeamOrderIndex(a.team.name);
+      const orderB = getTeamOrderIndex(b.team.name);
+      if (orderA !== orderB) return orderA - orderB;
+      return a.team.name.localeCompare(b.team.name);
+    });
 
   // Excel Export functionality
   const handleExportExcel = () => {
@@ -56,7 +81,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
     const leaderboardRows = rankedTeams.map((item, index) => {
       const { team, evaluation, result, tier } = item;
       const rowData: Record<string, string | number> = {
-        'Rank': index + 1,
+        'No.': index + 1,
         'Company': team.name,
       };
 
@@ -85,7 +110,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
     const wsLeaderboard = XLSX.utils.json_to_sheet(leaderboardRows);
     wsLeaderboard['!cols'] = [
-      { wch: 6 },  // Rank
+      { wch: 6 },  // No.
       { wch: 24 }, // Company
       { wch: 22 }, // Composite Score
       { wch: 12 }, // Overall %
@@ -98,7 +123,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
     // 2. Detailed Criterion Breakdown Sheet
     const breakdownRows: Array<{
-      'Rank': number;
+      'No.': number;
       'Company': string;
       'Criterion': string;
       'Weightage (%)': number;
@@ -118,7 +143,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
         const note = evaluation?.notes?.[c.id] || '';
 
         breakdownRows.push({
-          'Rank': index + 1,
+          'No.': index + 1,
           'Company': team.name,
           'Criterion': c.title,
           'Weightage (%)': c.weightage,
@@ -184,7 +209,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
           <div>
             <h2 className="text-xl font-black tracking-tight text-white">StreamLITE Challenge Leaderboard</h2>
             <p className="text-xs text-slate-400">
-              Rankings, weighted score totals, and criteria score breakdown across all finalists
+              Scores, weighted totals, and criteria breakdown across all finalists
             </p>
           </div>
         </div>
@@ -270,7 +295,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
-                <th className="p-4 w-16 text-center">Rank</th>
+                <th className="p-4 w-16 text-center">No.</th>
                 <th className="p-4 min-w-[200px]">Company</th>
                 <th className="p-4 w-28 text-center">Score / 5.0</th>
                 <th className="p-4 w-24 text-center">Overall %</th>
@@ -297,7 +322,6 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
               {rankedTeams.map((item, idx) => {
                 const { team, evaluation, result, tier } = item;
-                const rank = idx + 1;
 
                 return (
                   <tr
@@ -305,23 +329,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                     id={`leaderboard-row-${team.id}`}
                     className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
                   >
-                    {/* Rank badge */}
+                    {/* Entry Number badge */}
                     <td className="p-4 text-center font-extrabold font-mono text-sm">
-                      {rank === 1 ? (
-                        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 font-black">
-                          🥇 1
-                        </span>
-                      ) : rank === 2 ? (
-                        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 font-black">
-                          🥈 2
-                        </span>
-                      ) : rank === 3 ? (
-                        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-900/20 text-amber-900 dark:text-amber-400 border border-amber-800/30 font-black">
-                          🥉 3
-                        </span>
-                      ) : (
-                        <span className="text-slate-400 font-bold">#{rank}</span>
-                      )}
+                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-black text-xs">
+                        {idx + 1}
+                      </span>
                     </td>
 
                     {/* Team info */}
